@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NECRO-STITCH // Relics & Up-Cycled Couture</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Cinzel Decorative, UnifrakturMaguntia, Space Grotesk & Courier Prime -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <!-- Font Awesome para iconografía gótica/artesanal -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#0a0a0c',
+            slateDark: '#141418',
+            crimson: '#8a0303',
+            blood: '#b91c1c',
+            agedSilver: '#c0c0c0',
+            bone: '#e5e5e5',
+          },
+          fontFamily: {
+            gothic: ['"UnifrakturMaguntia"', 'serif'],
+            cinzel: ['"Cinzel Decorative"', 'serif'],
+            sans: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"Courier Prime"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Estilos base y texturas góticas artesanales */
+    body {
+      background-color: #0a0a0c;
+      color: #e5e5e5;
+      font-family: 'Space Grotesk', sans-serif;
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(138, 3, 3, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, rgba(192, 192, 192, 0.04) 0%, transparent 40%),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.012) 0px, rgba(255, 255, 255, 0.012) 1px, transparent 1px, transparent 8px);
+      overflow-x: hidden;
+    }
+
+    /* Bordes de costura / puntadas */
+    .stitch-border {
+      border: 1px dashed rgba(192, 192, 192, 0.35);
+      position: relative;
+    }
+    .stitch-border-red {
+      border: 1px dashed rgba(185, 28, 28, 0.65);
+    }
+    .stitch-card {
+      background: linear-gradient(145deg, #141418 0%, #0e0e11 100%);
+      border: 1px solid #26262d;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.85);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .stitch-card:hover {
+      border-color: #8a0303;
+      transform: translateY(-4px);
+      box-shadow: 0 14px 34px -8px rgba(138, 3, 3, 0.28);
+    }
+
+    /* Separador decorativo con tijeras */
+    .scissor-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #c0c0c0;
+    }
+    .scissor-divider::before,
+    .scissor-divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px dashed rgba(192, 192, 192, 0.3);
+    }
+    .scissor-divider:not(:empty)::before {
+      margin-right: 1rem;
+    }
+    .scissor-divider:not(:empty)::after {
+      margin-left: 1rem;
+    }
+
+    /* Scrollbar personalizada oscura */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a0a0c;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2e2e36;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #8a0303;
+    }
+
+    /* Animaciones sutiles */
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 10px rgba(138, 3, 3, 0.3); }
+      50% { box-shadow: 0 0 22px rgba(185, 28, 28, 0.6); }
+    }
+    .glow-crimson {
+      animation: pulseGlow 3.5s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-crimson selection:text-bone">
+
+  <!-- NOTIFICACIONES TOAST (Reemplazo elegante para alert) -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-3 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <!-- BARRA SUPERIOR DE ANUNCIOS -->
+  <div class="bg-crimson/90 border-b border-blood text-bone text-xs font-mono py-1.5 px-4 text-center tracking-wider">
+    <i class="fa-solid fa-scissors mr-1.5"></i> MODA CIRCULAR OSCURA • PRENDAS ÚNICAS REDISEÑADAS A MANO EN BOGOTÁ Y ENVÍOS A TODA COLOMBIA <i class="fa-solid fa-skull ml-1.5"></i>
+  </div>
+
+  <!-- NAVEGACIÓN PRINCIPAL -->
+  <header class="sticky top-0 z-40 bg-obsidian/95 backdrop-blur-md border-b border-zinc-800/90">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo -->
+        <a href="#inicio" class="flex items-center gap-3 group">
+          <div class="w-11 h-11 rounded-lg bg-slateDark border border-crimson flex items-center justify-center text-blood group-hover:bg-crimson group-hover:text-bone transition-colors">
+            <i class="fa-solid fa-scissors text-xl -rotate-45"></i>
+          </div>
+          <div>
+            <span class="font-cinzel font-black text-lg sm:text-xl tracking-widest text-bone block leading-none">NECRO-STITCH</span>
+            <span class="font-mono text-[10px] tracking-[0.22em] text-agedSilver uppercase block mt-1">Relics & Up-Cycled Couture</span>
+          </div>
+        </a>
+
+        <!-- Menú Desktop -->
+        <nav class="hidden lg:flex items-center gap-6 text-sm font-medium">
+          <a href="#inicio" class="text-agedSilver hover:text-blood transition-colors">Inicio</a>
+          <a href="#catalogo" class="text-agedSilver hover:text-blood transition-colors">Catálogo</a>
+          <button onclick="openSellModal()" class="text-bone hover:text-blood transition-colors flex items-center gap-1.5 font-semibold">
+            <i class="fa-solid fa-needle-and-thread text-blood"></i> Vender Prenda
+          </button>
+          <a href="#nosotros" class="text-agedSilver hover:text-blood transition-colors">Nosotros</a>
+          <a href="#vendedores" class="text-agedSilver hover:text-blood transition-colors">Vendedores</a>
+          <a href="#pagos" class="text-agedSilver hover:text-blood transition-colors">Formas de Pago</a>
+          <a href="#contacto-prendas" class="text-agedSilver hover:text-blood transition-colors">Contacto Directo</a>
+        </nav>
+
+        <!-- Acciones: Usuario y Carrito -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Botón de Perfil / Login -->
+          <button id="auth-btn" onclick="openAuthModal()" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-slateDark hover:bg-zinc-800 border border-zinc-700 text-xs sm:text-sm transition-all">
+            <i class="fa-solid fa-user-secret text-blood"></i>
+            <span id="auth-btn-text" class="font-mono truncate max-w-[110px] sm:max-w-[150px]">Acceder / Registro</span>
+          </button>
+
+          <!-- Botón Carrito -->
+          <button onclick="toggleCart()" class="relative p-2.5 rounded-lg bg-crimson/20 hover:bg-crimson border border-crimson text-bone transition-all" aria-label="Carrito de compras">
+            <i class="fa-solid fa-bag-shopping text-base sm:text-lg"></i>
+            <span id="cart-badge" class="absolute -top-2 -right-2 bg-blood text-bone font-mono text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center border border-obsidian">0</span>
+          </button>
+
+          <!-- Botón Menú Móvil -->
+          <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-lg bg-slateDark border border-zinc-700 text-agedSilver hover:text-bone">
+            <i class="fa-solid fa-bars text-lg"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menú Móvil Desplegable -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-slateDark border-b border-zinc-800 px-4 pt-3 pb-5 space-y-2.5 font-mono text-sm">
+      <a href="#inicio" onclick="toggleMobileMenu()" class="block py-2 px-3 rounded-lg hover:bg-obsidian text-agedSilver">01. Inicio</a>
+      <a href="#catalogo" onclick="toggleMobileMenu()" class="block py-2 px-3 rounded-lg hover:bg-obsidian text-agedSilver">02. Catálogo de Reliquias</a>
+      <button onclick="toggleMobileMenu(); openSellModal();" class="w-full text-left py-2 px-3 rounded-lg bg-crimson/20 border border-crimson/50 text-bone font-bold">
+        + Publicar / Vender Prenda
+      </button>
+      <a href="#nosotros" onclick="toggleMobileMenu()" class="block py-2 px-3 rounded-lg hover:bg-obsidian text-agedSilver">03. Nosotros & Manifiesto</a>
+      <a href="#vendedores" onclick="toggleMobileMenu()" class="block py-2 px-3 rounded-lg hover:bg-obsidian text-agedSilver">04. Artesanos / Vendedores</a>
+      <a href="#pagos" onclick="toggleMobileMenu()" class="block py-2 px-3 rounded-lg hover:bg-obsidian text-agedSilver">05. Formas de Pago</a>
+      <a href="#contacto-prendas" onclick="toggleMobileMenu()" class="block py-2 px-3 rounded-lg hover:bg-obsidian text-agedSilver">06. Directorio Contacto por Prenda</a>
+    </div>
+  </header>
+
+  <!-- HERO BANNER ATMOSFÉRICO -->
+  <section id="inicio" class="relative py-16 sm:py-24 overflow-hidden border-b border-zinc-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        
+        <!-- Texto Manifiesto -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slateDark border border-crimson/60 text-xs font-mono text-agedSilver">
+            <span class="w-2 h-2 rounded-full bg-blood animate-ping"></span>
+            UPCYCLING GÓTICO • 100% PIEZAS IRREPETIBLES
+          </div>
+          
+          <h1 class="font-cinzel text-4xl sm:text-5xl lg:text-6xl font-black text-bone leading-tight tracking-wide">
+            RESUCITAMOS TEXTILES <span class="text-blood">OLVIDADOS</span> CON HILO Y ACERO.
+          </h1>
+          
+          <p class="text-agedSilver text-base sm:text-lg leading-relaxed max-w-2xl font-light">
+            En <strong class="text-bone font-semibold">NECRO-STITCH</strong> transformamos ropa de segunda mano descartada en indumentaria gótica, punk y dark-avant-garde mediante técnicas artesanales de remiendo visible, deslavado ácido, encajes, parches y herrajes metálicos. Además, curamos una línea exclusiva de <span class="text-bone underline decoration-crimson">accesorios completamente nuevos</span>.
+          </p>
+
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <a href="#catalogo" class="px-6 py-3.5 rounded-lg bg-crimson hover:bg-blood text-bone font-cinzel font-bold text-sm tracking-wider transition-all glow-crimson flex items-center gap-2">
+              <i class="fa-solid fa-eye"></i> Explorar Catálogo
+            </a>
+            <button onclick="openSellModal()" class="px-6 py-3.5 rounded-lg bg-slateDark hover:bg-zinc-800 border border-agedSilver/40 text-bone font-mono text-sm transition-all flex items-center gap-2">
+              <i class="fa-solid fa-scissors text-blood"></i> Subir mi Prenda
+            </button>
+          </div>
+
+          <!-- Indicadores rápidos -->
+          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-zinc-800/80 font-mono">
+            <div>
+              <span class="text-2xl sm:text-3xl font-bold text-bone block">100%</span>
+              <span class="text-xs text-agedSilver">Piezas Únicas (1 de 1)</span>
+            </div>
+            <div>
+              <span class="text-2xl sm:text-3xl font-bold text-blood block">Regateo</span>
+              <span class="text-xs text-agedSilver">Trato directo con artesano</span>
+            </div>
+            <div>
+              <span class="text-2xl sm:text-3xl font-bold text-bone block">Zero</span>
+              <span class="text-xs text-agedSilver">Fast-Fashion Industrial</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Arte Visual Gótico SVG / Tarjeta Emblemática -->
+        <div class="lg:col-span-5">
+          <div class="stitch-card rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+            <div class="stitch-border rounded-xl p-6 flex flex-col items-center text-center bg-obsidian/70">
+              <!-- Emblema SVG Artesanal -->
+              <svg class="w-44 h-44 sm:w-52 sm:h-52 text-bone mb-4 drop-shadow-[0_0_15px_rgba(185,28,28,0.45)]" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="88" stroke="#8a0303" stroke-width="2" stroke-dasharray="6 4"/>
+                <circle cx="100" cy="100" r="76" stroke="#c0c0c0" stroke-width="1" stroke-opacity="0.4"/>
+                <!-- Aguja cruzada -->
+                <line x1="35" y1="165" x2="165" y2="35" stroke="#e5e5e5" stroke-width="3" stroke-linecap="round"/>
+                <ellipse cx="158" cy="42" rx="4" ry="8" transform="rotate(45 158 42)" stroke="#0a0a0c" stroke-width="2" fill="#8a0303"/>
+                <!-- Hilo serpenteante -->
+                <path d="M162 38 C185 60, 140 110, 165 140 C180 158, 120 180, 90 165" stroke="#b91c1c" stroke-width="2" stroke-dasharray="4 3" fill="none"/>
+                <!-- Silueta Corsé / Prenda Intervenida -->
+                <path d="M72 58 L128 58 L120 95 L134 142 L66 142 L80 95 Z" fill="#141418" stroke="#e5e5e5" stroke-width="2.5"/>
+                <!-- Costuras en X -->
+                <path d="M88 72 L112 84 M112 72 L88 84 M86 98 L114 110 M114 98 L86 110 M84 122 L116 134 M116 122 L84 134" stroke="#b91c1c" stroke-width="2.2" stroke-linecap="round"/>
+                <!-- Destellos -->
+                <path d="M100 24 L103 33 L112 36 L103 39 L100 48 L97 39 L88 36 L97 33 Z" fill="#c0c0c0"/>
+              </svg>
+
+              <p class="font-gothic text-2xl sm:text-3xl text-bone tracking-wider">“Nihil Perit, Omnia Mutatur”</p>
+              <p class="font-mono text-xs text-agedSilver mt-2 max-w-xs">
+                Nada se destruye, todo se recose. Negocia el valor justo directamente con quien intervino la prenda.
+              </p>
+              <div class="mt-5 w-full pt-4 border-t border-dashed border-zinc-700 flex justify-between items-center text-xs font-mono text-agedSilver">
+                <span><i class="fa-solid fa-location-dot text-blood mr-1"></i>Chapinero / Teusaquillo, BOG</span>
+                <span class="text-bone">EST. 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN CATÁLOGO DE PRENDAS Y ACCESORIOS -->
+  <section id="catalogo" class="py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Encabezado Sección -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div>
+          <span class="font-mono text-xs text-blood uppercase tracking-widest block mb-2">// ARCHIVO TEXTIL & RELIQUIAS</span>
+          <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-bone">Catálogo de Piezas</h2>
+        </div>
+
+        <!-- Buscador rápido -->
+        <div class="relative w-full md:w-80">
+          <input type="text" id="search-input" oninput="renderCatalog()" placeholder="Buscar prenda, artesano, tela..." class="w-full bg-slateDark border border-zinc-700 focus:border-blood rounded-lg py-2.5 pl-10 pr-4 text-sm text-bone placeholder-zinc-500 outline-none font-mono">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-zinc-500 text-sm"></i>
+        </div>
+      </div>
+
+      <!-- Filtros por Categoría -->
+      <div class="flex flex-wrap items-center gap-2.5 mb-10 pb-4 border-b border-zinc-800/80" id="category-filters">
+        <button onclick="setCategory('Todo')" data-cat="Todo" class="cat-btn active px-4 py-2 rounded-lg font-mono text-xs sm:text-sm bg-crimson text-bone border border-blood transition-all">
+          Todo el Archivo
+        </button>
+        <button onclick="setCategory('Pantalones')" data-cat="Pantalones" class="cat-btn px-4 py-2 rounded-lg font-mono text-xs sm:text-sm bg-slateDark text-agedSilver hover:text-bone border border-zinc-700 transition-all">
+          Pantalones
+        </button>
+        <button onclick="setCategory('Camisetas')" data-cat="Camisetas" class="cat-btn px-4 py-2 rounded-lg font-mono text-xs sm:text-sm bg-slateDark text-agedSilver hover:text-bone border border-zinc-700 transition-all">
+          Camisetas
+        </button>
+        <button onclick="setCategory('Chaquetas/Abrigos')" data-cat="Chaquetas/Abrigos" class="cat-btn px-4 py-2 rounded-lg font-mono text-xs sm:text-sm bg-slateDark text-agedSilver hover:text-bone border border-zinc-700 transition-all">
+          Chaquetas / Abrigos
+        </button>
+        <button onclick="setCategory('Faldas/Vestidos')" data-cat="Faldas/Vestidos" class="cat-btn px-4 py-2 rounded-lg font-mono text-xs sm:text-sm bg-slateDark text-agedSilver hover:text-bone border border-zinc-700 transition-all">
+          Faldas / Vestidos
+        </button>
+        <button onclick="setCategory('Accesorios')" data-cat="Accesorios" class="cat-btn px-4 py-2 rounded-lg font-mono text-xs sm:text-sm bg-slateDark text-agedSilver hover:text-bone border border-zinc-700 transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-ring text-blood"></i> Accesorios [Nuevos]
+        </button>
+      </div>
+
+      <!-- Grid de Productos -->
+      <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+        <!-- Renderizado dinámico mediante JS -->
+      </div>
+
+      <!-- Mensaje si no hay resultados -->
+      <div id="empty-catalog" class="hidden text-center py-16 stitch-border rounded-xl bg-slateDark/40">
+        <i class="fa-solid fa-ghost text-4xl text-zinc-600 mb-3"></i>
+        <p class="font-cinzel text-xl text-bone">No hay reliquias que coincidan con tu búsqueda</p>
+        <p class="font-mono text-xs text-agedSilver mt-1">Intenta limpiar los filtros o explora otra categoría.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DIVISOR CON TIJERAS -->
+  <div class="max-w-7xl mx-auto px-4"><div class="scissor-divider"><i class="fa-solid fa-scissors text-blood"></i></div></div>
+
+  <!-- SECCIÓN NOSOTROS / MANIFIESTO UPCYCLING -->
+  <section id="nosotros" class="py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">
+          <span class="font-mono text-xs text-blood uppercase tracking-widest">// NUESTRA FILOSOFÍA OSCURA</span>
+          <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-bone">Sostenibilidad Subterránea y Costura Visible</h2>
+          <p class="text-agedSilver leading-relaxed">
+            La industria textil convencional desecha toneladas de prendas cada día. En <span class="text-bone font-semibold">NECRO-STITCH</span> recolectamos denim pesado, algodón vintage, cuero y gabardinas olvidadas en mercados de pulgas para someterlas a un proceso de <strong class="text-bone">resurrección artesanal</strong>.
+          </p>
+          <p class="text-agedSilver leading-relaxed">
+            No ocultamos las cicatrices de la tela: las celebramos con puntadas gruesas en hilo encerado, parches serigrafiados a mano, ojales metálicos, cadenas desmontables y encajes recuperados. Cada pieza tiene alma propia y un artesano detrás con quien puedes conversar y regatear.
+          </p>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div class="p-4 rounded-xl bg-slateDark border border-zinc-800">
+              <i class="fa-solid fa-recycle text-blood text-xl mb-2"></i>
+              <h3 class="font-cinzel font-bold text-bone text-sm">Prendas Intervenidas (2da Mano)</h3>
+              <p class="text-xs text-agedSilver font-mono mt-1">Higienizadas, reforzadas estructuralmente y rediseñadas desde cero.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slateDark border border-zinc-800">
+              <i class="fa-solid fa-gem text-agedSilver text-xl mb-2"></i>
+              <h3 class="font-cinzel font-bold text-bone text-sm">Accesorios Nuevos</h3>
+              <p class="text-xs text-agedSilver font-mono mt-1">Chokers, arneses y joyería en acero inoxidable 316L totalmente nuevos.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Proceso en 3 pasos -->
+        <div class="stitch-card rounded-2xl p-6 sm:p-8 space-y-6">
+          <h3 class="font-cinzel text-xl font-bold text-bone border-b border-zinc-800 pb-3">Ritual de Transformación</h3>
+          
+          <div class="flex gap-4">
+            <div class="w-10 h-10 rounded-lg bg-crimson/20 border border-crimson flex items-center justify-center font-mono font-bold text-blood shrink-0">01</div>
+            <div>
+              <h4 class="font-bold text-bone">Curaduría y Desinfección Profunda</h4>
+              <p class="text-sm text-agedSilver mt-1">Seleccionamos prendas base de fibras resistentes (denim, dril, algodón grueso) y las sometemos a lavado industrial ecológico.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="w-10 h-10 rounded-lg bg-crimson/20 border border-crimson flex items-center justify-center font-mono font-bold text-blood shrink-0">02</div>
+            <div>
+              <h4 class="font-bold text-bone">Deconstrucción, Blanqueado y Remiendo</h4>
+              <p class="text-sm text-agedSilver mt-1">Aplicamos técnicas de distressed, acid-wash, costura Sashiko oscura, parches serigrafiados y ensamblaje de herrajes.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="w-10 h-10 rounded-lg bg-crimson/20 border border-crimson flex items-center justify-center font-mono font-bold text-blood shrink-0">03</div>
+            <div>
+              <h4 class="font-bold text-bone">Trato Directo y Regateo Justo</h4>
+              <p class="text-sm text-agedSilver mt-1">Publicamos la reliquia con el perfil de su creador. Puedes comprarla al instante o proponer una oferta en nuestro módulo de regateo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN VENDEDORES / ARTESANOS -->
+  <section id="vendedores" class="py-16 sm:py-20 bg-slateDark/30 border-y border-zinc-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+        <div>
+          <span class="font-mono text-xs text-blood uppercase tracking-widest block mb-2">// COLECTIVO DE COSTURA</span>
+          <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-bone">Artesanos y Vendedores Activos</h2>
+        </div>
+        <button onclick="openSellModal()" class="self-start sm:self-auto px-4 py-2.5 rounded-lg bg-crimson/20 hover:bg-crimson border border-crimson text-bone font-mono text-xs transition-all">
+          + Unirme como Vendedor
+        </button>
+      </div>
+
+      <div id="sellers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Renderizado dinámico de vendedores -->
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN FORMAS DE PAGO -->
+  <section id="pagos" class="py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="font-mono text-xs text-blood uppercase tracking-widest block mb-2">// TRANSACCIONES SEGURAS</span>
+        <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-bone">Formas de Pago Aceptadas</h2>
+        <p class="text-agedSilver text-sm mt-3 font-mono">Pagos locales sin fricciones para Colombia y entregas contraentrega en Bogotá.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div class="stitch-card rounded-xl p-5 text-center">
+          <div class="w-12 h-12 mx-auto rounded-full bg-purple-950/60 border border-purple-500/40 flex items-center justify-center text-purple-300 text-xl mb-3">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+          </div>
+          <h3 class="font-cinzel font-bold text-bone text-base">Nequi</h3>
+          <p class="font-mono text-xs text-agedSilver mt-1.5">Transferencia inmediata vía QR o número celular sin comisión.</p>
+        </div>
+
+        <div class="stitch-card rounded-xl p-5 text-center">
+          <div class="w-12 h-12 mx-auto rounded-full bg-red-950/60 border border-red-500/40 flex items-center justify-center text-red-400 text-xl mb-3">
+            <i class="fa-solid fa-wallet"></i>
+          </div>
+          <h3 class="font-cinzel font-bold text-bone text-base">Daviplata</h3>
+          <p class="font-mono text-xs text-agedSilver mt-1.5">Pago rápido desde tu app Daviplata con validación en vivo.</p>
+        </div>
+
+        <div class="stitch-card rounded-xl p-5 text-center">
+          <div class="w-12 h-12 mx-auto rounded-full bg-amber-950/50 border border-amber-500/40 flex items-center justify-center text-amber-300 text-xl mb-3">
+            <i class="fa-solid fa-building-columns"></i>
+          </div>
+          <h3 class="font-cinzel font-bold text-bone text-base">Bancolombia</h3>
+          <p class="font-mono text-xs text-agedSilver mt-1.5">Transferencia directa a cuenta de ahorros o corresponsal.</p>
+        </div>
+
+        <div class="stitch-card rounded-xl p-5 text-center">
+          <div class="w-12 h-12 mx-auto rounded-full bg-crimson/20 border border-crimson flex items-center justify-center text-blood text-xl mb-3">
+            <i class="fa-solid fa-motorcycle"></i>
+          </div>
+          <h3 class="font-cinzel font-bold text-bone text-base">Contraentrega</h3>
+          <p class="font-mono text-xs text-agedSilver mt-1.5">Paga en efectivo o transferencia al recibir en Bogotá D.C.</p>
+        </div>
+
+        <div class="stitch-card rounded-xl p-5 text-center">
+          <div class="w-12 h-12 mx-auto rounded-full bg-zinc-800 border border-agedSilver/40 flex items-center justify-center text-agedSilver text-xl mb-3">
+            <i class="fa-solid fa-credit-card"></i>
+          </div>
+          <h3 class="font-cinzel font-bold text-bone text-base">Tarjetas / PSE</h3>
+          <p class="font-mono text-xs text-agedSilver mt-1.5">Débito PSE, Visa, Mastercard y enlaces de pago encriptados.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN INFERIOR OBLIGATORIA: DIRECTORIO DE CONTACTO POR PRENDA Y VENDEDOR -->
+  <section id="contacto-prendas" class="py-16 sm:py-20 bg-slateDark/60 border-t border-crimson/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-8">
+        <span class="font-mono text-xs text-blood uppercase tracking-widest block mb-2">// LÍNEA DIRECTA ARTESANAL</span>
+        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-bone">Contacto Directo por Prenda y Precios Regateables</h2>
+        <p class="text-agedSilver text-sm font-mono mt-2">
+          Consulta cada prenda disponible, su precio actual (incluyendo descuentos ya regateados) y contacta directamente al vendedor responsable por WhatsApp, Instagram o correo.
+        </p>
+      </div>
+
+      <!-- Tabla responsiva en Desktop / Cards en Móvil -->
+      <div class="overflow-x-auto rounded-xl border border-zinc-800 bg-obsidian/90 shadow-2xl">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-zinc-800 bg-slateDark text-xs font-mono uppercase text-agedSilver">
+              <th class="py-4 px-4">Prenda / Reliquia</th>
+              <th class="py-4 px-4">Condición</th>
+              <th class="py-4 px-4">Precio & Regateo</th>
+              <th class="py-4 px-4">Vendedor / Taller</th>
+              <th class="py-4 px-4 text-right">Canales de Contacto Directo</th>
+            </tr>
+          </thead>
+          <tbody id="contact-directory-body" class="divide-y divide-zinc-800/80 text-sm">
+            <!-- Renderizado dinámico mediante JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-obsidian border-t border-zinc-900 py-12 font-mono text-xs text-agedSilver">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-scissors text-blood text-lg"></i>
+        <span class="font-cinzel text-bone font-bold text-base">NECRO-STITCH // RELICS</span>
+      </div>
+      <p class="text-center md:text-left">
+        © 2026 NECRO-STITCH Up-Cycled Couture. Moda gótica sostenible hecha a mano. Listo para despliegue en GitHub Pages.
+      </p>
+      <div class="flex items-center gap-4">
+        <button onclick="resetDemoData()" class="text-zinc-500 hover:text-blood underline transition-colors" title="Restaurar prendas y precios iniciales">
+          Restaurar Demo
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- MODALES Y PANELES LATERALES INTERACTIVOS                              -->
+  <!-- ===================================================================== -->
+
+  <!-- 1. MODAL DE VISTA RÁPIDA DE PRENDA -->
+  <div id="quickview-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="stitch-card rounded-2xl max-w-2xl w-full p-6 sm:p-8 relative my-8 border border-zinc-700">
+      <button onclick="closeModal('quickview-modal')" class="absolute top-4 right-4 w-9 h-9 rounded-lg bg-obsidian border border-zinc-700 text-agedSilver hover:text-bone flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="quickview-content"></div>
+    </div>
+  </div>
+
+  <!-- 2. MODAL DE REGATEO INTERACTIVO INDIVIDUAL -->
+  <div id="haggle-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="stitch-card rounded-2xl max-w-lg w-full p-6 sm:p-7 relative my-8 border border-crimson">
+      <button onclick="closeModal('haggle-modal')" class="absolute top-4 right-4 w-9 h-9 rounded-lg bg-obsidian border border-zinc-700 text-agedSilver hover:text-bone flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center gap-2 text-blood font-mono text-xs uppercase mb-1">
+        <i class="fa-solid fa-handshake-angle"></i> Sala de Negociación Directa
+      </div>
+      <h3 id="haggle-title" class="font-cinzel text-xl sm:text-2xl font-bold text-bone">Regatear Prenda</h3>
+      <p id="haggle-seller-info" class="font-mono text-xs text-agedSilver mt-1"></p>
+
+      <!-- Resumen de precios -->
+      <div class="grid grid-cols-2 gap-3 my-4 p-3.5 rounded-xl bg-obsidian border border-zinc-800 font-mono">
+        <div>
+          <span class="text-[11px] text-zinc-500 block">Precio Lista Original</span>
+          <span id="haggle-original-price" class="text-base font-bold text-bone">$0</span>
+        </div>
+        <div>
+          <span class="text-[11px] text-zinc-500 block">Tu Mejor Oferta Aceptada</span>
+          <span id="haggle-current-deal" class="text-base font-bold text-blood">Sin oferta aún</span>
+        </div>
+      </div>
+
+      <!-- Historial del chat de regateo -->
+      <div id="haggle-chat-box" class="h-48 overflow-y-auto p-3.5 rounded-xl bg-obsidian/90 border border-zinc-800 space-y-3 font-mono text-xs mb-4">
+        <!-- Mensajes generados dinámicamente -->
+      </div>
+
+      <!-- Formulario de oferta -->
+      <form id="haggle-form" onsubmit="submitHaggleOffer(event)" class="space-y-3">
+        <label class="block font-mono text-xs text-agedSilver">Propón tu precio en COP ($):</label>
+        <div class="flex gap-2">
+          <div class="relative flex-1">
+            <span class="absolute left-3.5 top-2.5 text-zinc-500 font-mono">$</span>
+            <input type="number" id="haggle-offer-input" required min="5000" step="1000" placeholder="Ej: 75000" class="w-full bg-obsidian border border-zinc-700 focus:border-blood rounded-lg py-2.5 pl-8 pr-3 text-sm text-bone font-mono outline-none">
+          </div>
+          <button type="submit" class="px-5 py-2.5 rounded-lg bg-crimson hover:bg-blood text-bone font-cinzel font-bold text-xs tracking-wider transition-all">
+            Ofertar
+          </button>
+        </div>
+        <!-- Botones rápidos de porcentaje -->
+        <div id="haggle-quick-chips" class="flex flex-wrap gap-2 pt-1"></div>
+      </form>
+
+      <!-- Acción post-acuerdo -->
+      <div id="haggle-success-action" class="hidden mt-4 pt-4 border-t border-zinc-800">
+        <button id="haggle-add-cart-btn" class="w-full py-3 rounded-lg bg-emerald-900/60 hover:bg-emerald-800 border border-emerald-500/60 text-bone font-cinzel font-bold text-sm transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-bag-shopping"></i> Añadir al Carrito con Precio Regateado
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. MODAL DE REGISTRO / ACCESO DE USUARIO -->
+  <div id="auth-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="stitch-card rounded-2xl max-w-md w-full p-6 sm:p-8 relative my-8 border border-zinc-700">
+      <button onclick="closeModal('auth-modal')" class="absolute top-4 right-4 w-9 h-9 rounded-lg bg-obsidian border border-zinc-700 text-agedSilver hover:text-bone flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div id="auth-logged-out-view">
+        <div class="text-center mb-6">
+          <i class="fa-solid fa-skull text-blood text-3xl mb-2"></i>
+          <h3 class="font-cinzel text-2xl font-bold text-bone">Identidad en el Colectivo</h3>
+          <p class="font-mono text-xs text-agedSilver mt-1">Regístrate para guardar tus regateos o publicar tus propias prendas intervenidas.</p>
+        </div>
+
+        <form onsubmit="handleAuthSubmit(event)" class="space-y-4 font-mono text-xs">
+          <div>
+            <label class="block text-agedSilver mb-1">Nombre / Alias Gótico *</label>
+            <input type="text" id="auth-name" required placeholder="Ej: Morticia_Sewing" class="w-full bg-obsidian border border-zinc-700 focus:border-blood rounded-lg p-2.5 text-bone outline-none">
+          </div>
+
+          <div>
+            <label class="block text-agedSilver mb-1">Correo Electrónico *</label>
+            <input type="email" id="auth-email" required placeholder="tu@correo.com" class="w-full bg-obsidian border border-zinc-700 focus:border-blood rounded-lg p-2.5 text-bone outline-none">
+          </div>
+
+          <div>
+            <label class="block text-agedSilver mb-1">Rol en NECRO-STITCH *</label>
+            <select id="auth-role" onchange="toggleSellerFields()" class="w-full bg-obsidian border border-zinc-700 focus:border-blood rounded-lg p-2.5 text-bone outline-none">
+              <option value="Comprador">Comprador / Coleccionista</option>
+              <option value="Vendedor/Artesano">Vendedor / Artesano Upcycler</option>
+            </select>
+          </div>
+
+          <div id="seller-extra-fields" class="hidden space-y-3 p-3.5 rounded-xl bg-obsidian/80 border border-dashed border-crimson/60">
+            <p class="text-[11px] text-blood font-bold uppercase">// Datos de contacto para tus compradores:</p>
+            <div>
+              <label class="block text-agedSilver mb-1">WhatsApp (con indicativo 57)</label>
+              <input type="text" id="auth-whatsapp" placeholder="573001234567" class="w-full bg-slateDark border border-zinc-700 rounded-lg p-2 text-bone outline-none">
+            </div>
+            <div>
+              <label class="block text-agedSilver mb-1">Instagram del Taller</label>
+              <input type="text" id="auth-instagram" placeholder="@tu_taller_dark" class="w-full bg-slateDark border border-zinc-700 rounded-lg p-2 text-bone outline-none">
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-3 rounded-lg bg-crimson hover:bg-blood text-bone font-cinzel font-bold text-sm tracking-wider transition-all mt-2">
+            Entrar / Crear Cuenta
+          </button>
+        </form>
+      </div>
+
+      <!-- Vista cuando ya hay sesión activa -->
+      <div id="auth-logged-in-view" class="hidden text-center space-y-4">
+        <div class="w-16 h-16 mx-auto rounded-full bg-crimson/20 border border-crimson flex items-center justify-center text-blood text-2xl">
+          <i class="fa-solid fa-user-astronaut"></i>
+        </div>
+        <div>
+          <span id="profile-role-badge" class="px-3 py-1 rounded-full bg-crimson/20 border border-crimson text-blood font-mono text-xs"></span>
+          <h3 id="profile-name" class="font-cinzel text-2xl font-bold text-bone mt-2"></h3>
+          <p id="profile-email" class="font-mono text-xs text-agedSilver"></p>
+        </div>
+        <div class="p-4 rounded-xl bg-obsidian border border-zinc-800 font-mono text-xs text-left space-y-1.5">
+          <p><span class="text-zinc-500">WhatsApp:</span> <span id="profile-wa" class="text-bone"></span></p>
+          <p><span class="text-zinc-500">Instagram:</span> <span id="profile-ig" class="text-bone"></span></p>
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button onclick="closeModal('auth-modal'); openSellModal();" class="flex-1 py-2.5 rounded-lg bg-slateDark hover:bg-zinc-800 border border-zinc-700 text-bone font-mono text-xs">
+            Publicar Prenda
+          </button>
+          <button onclick="logoutUser()" class="flex-1 py-2.5 rounded-lg bg-red-950/60 hover:bg-red-900 border border-red-800 text-red-200 font-mono text-xs">
+            Cerrar Sesión
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. MODAL DE PUBLICAR / VENDER PRENDA -->
+  <div id="sell-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="stitch-card rounded-2xl max-w-xl w-full p-6 sm:p-8 relative my-8 border border-crimson/70">
+      <button onclick="closeModal('sell-modal')" class="absolute top-4 right-4 w-9 h-9 rounded-lg bg-obsidian border border-zinc-700 text-agedSilver hover:text-bone flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="mb-5">
+        <span class="font-mono text-xs text-blood uppercase">// NUEVA RELIQUIA AL ARCHIVO</span>
+        <h3 class="font-cinzel text-2xl font-bold text-bone">Publicar Prenda o Accesorio</h3>
+        <p id="sell-user-notice" class="font-mono text-xs text-agedSilver mt-1"></p>
+      </div>
+
+      <form onsubmit="handlePublishProduct(event)" class="space-y-4 font-mono text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-agedSilver mb-1">Nombre de la Pieza *</label>
+            <input type="text" id="prod-name" required placeholder="Ej: Chaqueta Denim Cruces" class="w-full bg-obsidian border border-zinc-700 focus:border-blood rounded-lg p-2.5 text-bone outline-none">
+          </div>
+          <div>
+            <label class="block text-agedSilver mb-1">Categoría *</label>
+            <select id="prod-category" onchange="autoToggleCondition()" class="w-full bg-obsidian border border-zinc-700 focus:border-blood rounded-lg p-2.5 text-bone outline-none">
+              <option value="Pantalones">Pantalones</option>
+              <option value="Camisetas">Camisetas</option>
+              <option value="Chaquetas/Abrigos">Chaquetas/Abrigos</option>
+              <option value="Faldas/Vestidos">Faldas/Vestidos</option>
+              <option value="Accesorios">Accesorios [Nuevos]</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-agedSilver mb-1">Condición *</label>
+            <select id="prod-condition" class="w-full bg-obsidian border border-zinc-700 focus:border-blood rounded-lg p-2.5 text-bone outline-none">
+              <option value="REDISEÑADA / 2DA MANO">REDISEÑADA / 2DA MANO</option>
+              <option value="ACCESORIO NUEVO">ACCESORIO NUEVO</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-agedSilver mb-1">Talla *</label>
+            <input type="text" id="prod-size" required placeholder="Ej: M / 32 / Única" class="w-full bg-obsidian border border-zinc-700 focus:border-blood rounded-lg p-2.5 text-bone outline-none">
+          </div>
+          <div>
+            <label class="block text-agedSilver mb-1">Nivel Intervención</label>
+            <select id="prod-level" class="w-full bg-obsidian border border-zinc-700 focus:border-blood rounded-lg p-2.5 text-bone outline-none">
+              <option value="Alto (Reconstrucción Total)">Alto (Reconstrucción)</option>
+              <option value="Medio (Parches y Herrajes)">Medio (Parches/Herrajes)</option>
+              <option value="Pieza Nueva de Taller">Pieza Nueva de Taller</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-agedSilver mb-1">Precio Venta COP ($) *</label>
+            <input type="number" id="prod-price" required min="10000" step="1000" placeholder="Ej: 120000" class="w-full bg-obsidian border border-zinc-700 focus:border-blood rounded-lg p-2.5 text-bone outline-none">
+          </div>
+          <div>
+            <label class="block text-agedSilver mb-1">Precio Mínimo Regateo ($) *</label>
+            <input type="number" id="prod-min-price" required min="5000" step="1000" placeholder="Ej: 95000" class="w-full bg-obsidian border border-zinc-700 focus:border-blood rounded-lg p-2.5 text-bone outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-agedSilver mb-1">Descripción de materiales, remiendos y detalles *</label>
+          <textarea id="prod-desc" rows="3" required placeholder="Describe las telas recuperadas, tipo de costuras, cadenas o acabados..." class="w-full bg-obsidian border border-zinc-700 focus:border-blood rounded-lg p-2.5 text-bone outline-none"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-lg bg-crimson hover:bg-blood text-bone font-cinzel font-bold text-sm tracking-wider transition-all">
+          Publicar Reliquia en el Catálogo
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. PANEL LATERAL CARRITO DE COMPRAS -->
+  <div id="cart-drawer" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex justify-end">
+    <div class="w-full max-w-md bg-slateDark border-l border-zinc-800 h-full flex flex-col justify-between p-6 overflow-y-auto">
+      <div>
+        <div class="flex items-center justify-between pb-4 border-b border-zinc-800">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-bag-shopping text-blood text-xl"></i>
+            <h3 class="font-cinzel text-xl font-bold text-bone">Tu Bolsa de Reliquias</h3>
+          </div>
+          <button onclick="toggleCart()" class="w-8 h-8 rounded-lg bg-obsidian border border-zinc-700 text-agedSilver hover:text-bone flex items-center justify-center">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Lista de items -->
+        <div id="cart-items-container" class="py-5 space-y-4">
+          <!-- Renderizado dinámico -->
+        </div>
+      </div>
+
+      <!-- Resumen y Checkout -->
+      <div id="cart-footer" class="border-t border-zinc-800 pt-4 space-y-4 font-mono">
+        <div class="flex justify-between items-center text-sm">
+          <span class="text-agedSilver">Subtotal:</span>
+          <span id="cart-subtotal" class="text-xl font-bold text-bone">$0 COP</span>
+        </div>
+
+        <div>
+          <label class="block text-xs text-agedSilver mb-1.5">Selecciona Método de Pago:</label>
+          <select id="checkout-payment-method" class="w-full bg-obsidian border border-zinc-700 rounded-lg p-2.5 text-xs text-bone outline-none">
+            <option value="Nequi">Nequi (Transferencia Inmediata)</option>
+            <option value="Daviplata">Daviplata</option>
+            <option value="Bancolombia">Transferencia Bancolombia</option>
+            <option value="Contraentrega Bogotá">Pago Contraentrega (Bogotá D.C.)</option>
+            <option value="Tarjetas / PSE">Tarjetas Crédito/Débito / PSE</option>
+          </select>
+        </div>
+
+        <button onclick="processCheckout()" class="w-full py-3.5 rounded-lg bg-crimson hover:bg-blood text-bone font-cinzel font-bold text-sm tracking-wider transition-all glow-crimson">
+          Confirmar Pedido Artesanal
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. MODAL COMPROBANTE DE COMPRA -->
+  <div id="receipt-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="stitch-card rounded-2xl max-w-md w-full p-6 sm:p-8 text-center border border-blood">
+      <div class="w-14 h-14 mx-auto rounded-full bg-crimson/20 border border-crimson flex items-center justify-center text-blood text-2xl mb-4">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <h3 class="font-cinzel text-2xl font-bold text-bone">¡Pacto Sellado!</h3>
+      <p class="font-mono text-xs text-agedSilver mt-2">Tu orden ha sido registrada. Cada artesano ha sido notificado para preparar el envío de tus reliquias.</p>
+      <div id="receipt-details" class="my-5 p-4 rounded-xl bg-obsidian border border-dashed border-zinc-700 text-left font-mono text-xs space-y-2"></div>
+      <button onclick="closeModal('receipt-modal')" class="w-full py-2.5 rounded-lg bg-crimson text-bone font-cinzel font-bold text-sm">
+        Continuar Explorando
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- LÓGICA JAVASCRIPT (ESTADO, LOCALSTORAGE, REGATEO, CARRITO Y SVG ART)  -->
+  <!-- ===================================================================== -->
+  <script>
+    // --- 1. DATOS INICIALES CURADOS (VENDEDORES Y PRENDAS) ---
+    const DEFAULT_SELLERS = [
+      {
+        id: 'sel-1',
+        name: 'Valeria "La Parca" Cuervo',
+        workshop: 'Cuervo Negro Upcycling',
+        specialty: 'Denim intervenido, corsetería y encajes',
+        rating: '4.9 ★ (48 entregas)',
+        location: 'Chapinero Alto, Bogotá',
+        whatsapp: '573104567890',
+        instagram: '@cuervonegro.upcycle',
+        email: 'valeria@necrostitch.co',
+        personality: 'directa'
+      },
+      {
+        id: 'sel-2',
+        name: 'Damián Vex',
+        workshop: 'Vex & Rust Atelier',
+        specialty: 'Pantalones cargo, acid-wash y serigrafía',
+        rating: '4.8 ★ (35 entregas)',
+        location: 'Teusaquillo, Bogotá',
+        whatsapp: '573209876543',
+        instagram: '@vexrust.atelier',
+        email: 'damian@necrostitch.co',
+        personality: 'relajada'
+      },
+      {
+        id: 'sel-3',
+        name: 'Nyx Orfebrería Oscura',
+        workshop: 'Nyx Steel & Leather',
+        specialty: 'Accesorios nuevos en acero y cuero vegano',
+        rating: '5.0 ★ (62 entregas)',
+        location: 'La Candelaria, Bogotá',
+        whatsapp: '573012345678',
+        instagram: '@nyx.darksteel',
+        email: 'nyx@necrostitch.co',
+        personality: 'firme'
+      },
+      {
+        id: 'sel-4',
+        name: 'Kaelen Remiendos',
+        workshop: 'Hilo de Sangre',
+        specialty: 'Sastrería gótica reconstruida y abrigos',
+        rating: '4.9 ★ (29 entregas)',
+        location: 'Usaquén, Bogotá',
+        whatsapp: '573158765432',
+        instagram: '@hilodesangre.bog',
+        email: 'kaelen@necrostitch.co',
+        personality: 'poetica'
+      }
+    ];
+
+    const DEFAULT_PRODUCTS = [
+      {
+        id: 'prod-1',
+        name: 'Pantalón Cargo "Abismo" Remendado',
+        category: 'Pantalones',
+        condition: 'REDISEÑADA / 2DA MANO',
+        size: '32 / L',
+        intervention: 'Alto (Reconstrucción Total)',
+        price: 135000,
+        minPrice: 108000,
+        sellerId: 'sel-2',
+        artType: 'cargo',
+        description: 'Pantalón cargo de dril negro recuperado, intervenido con parches serigrafiados de polillas, costuras visibles en hilo rojo encerado y doble cadena lateral desmontable en acero.'
+      },
+      {
+        id: 'prod-2',
+        name: 'Chaqueta Denim "Catedral Rota"',
+        category: 'Chaquetas/Abrigos',
+        condition: 'REDISEÑADA / 2DA MANO',
+        size: 'M / Oversize',
+        intervention: 'Alto (Reconstrucción Total)',
+        price: 165000,
+        minPrice: 130000,
+        sellerId: 'sel-1',
+        artType: 'jacket',
+        description: 'Chaqueta de jean vintage deslavada con ácido, mangas reconstruidas con encaje guipur negro, taches cónicos en los hombros y espalda estampada a mano.'
+      },
+      {
+        id: 'prod-3',
+        name: 'Camiseta Vintage "Nosferatu Acid-Wash"',
+        category: 'Camisetas',
+        condition: 'REDISEÑADA / 2DA MANO',
+        size: 'L',
+        intervention: 'Medio (Parches y Herrajes)',
+        price: 75000,
+        minPrice: 58000,
+        sellerId: 'sel-2',
+        artType: 'tshirt',
+        description: 'Camiseta 100% algodón pesado de segunda mano sometida a baño de cloro controlado, cuello rasgado a mano, imperdibles metálicos y serigrafía gótica en tinta plastisol.'
+      },
+      {
+        id: 'prod-4',
+        name: 'Falda Plisada "Viuda de Medianoche"',
+        category: 'Faldas/Vestidos',
+        condition: 'REDISEÑADA / 2DA MANO',
+        size: 'S / M',
+        intervention: 'Alto (Reconstrucción Total)',
+        price: 110000,
+        minPrice: 88000,
+        sellerId: 'sel-4',
+        artType: 'skirt',
+        description: 'Falda tableada de paño oscuro rescatada y acortada asimétricamente, con bajo de tul rasgado, hebillas laterales de ajuste y crucifijo metálico colgante.'
+      },
+      {
+        id: 'prod-5',
+        name: 'Choker de Cuero con Argollas "Espectro"',
+        category: 'Accesorios',
+        condition: 'ACCESORIO NUEVO',
+        size: 'Ajustable (32-42 cm)',
+        intervention: 'Pieza Nueva de Taller',
+        price: 55000,
+        minPrice: 45000,
+        sellerId: 'sel-3',
+        artType: 'choker',
+        description: 'Accesorio completamente NUEVO fabricado artesanalmente en cuero sintético de alta resistencia, triple argolla central en acero inoxidable y broche de hebilla.'
+      },
+      {
+        id: 'prod-6',
+        name: 'Aretes Espada & Cruz en Acero 316L',
+        category: 'Accesorios',
+        condition: 'ACCESORIO NUEVO',
+        size: '6.5 cm largo',
+        intervention: 'Pieza Nueva de Taller',
+        price: 42000,
+        minPrice: 34000,
+        sellerId: 'sel-3',
+        artType: 'earrings',
+        description: 'Par de aretes NUEVOS hipoalergénicos en acero quirúrgico 316L con diseño de daga medieval entrelazada con cruz gótica. No se oscurecen ni oxidan.'
+      },
+      {
+        id: 'prod-7',
+        name: 'Cinturón Doble Ojal "Penitencia"',
+        category: 'Accesorios',
+        condition: 'ACCESORIO NUEVO',
+        size: '110 cm (Multitalla)',
+        intervention: 'Pieza Nueva de Taller',
+        price: 68000,
+        minPrice: 55000,
+        sellerId: 'sel-3',
+        artType: 'belt',
+        description: 'Cinturón NUEVO estilo punk/gótico de doble hilera de ojales metálicos niquelados de punta a punta y hebilla doble reforzada.'
+      },
+      {
+        id: 'prod-8',
+        name: 'Gabardina Sastre "Exhumación"',
+        category: 'Chaquetas/Abrigos',
+        condition: 'REDISEÑADA / 2DA MANO',
+        size: 'L / XL',
+        intervention: 'Alto (Reconstrucción Total)',
+        price: 190000,
+        minPrice: 150000,
+        sellerId: 'sel-4',
+        artType: 'coat',
+        description: 'Abrigo largo de paño inglés recuperado, intervenido con hombreras estructuradas, solapas bordadas con telarañas en hilo plata y botones antiguos.'
+      },
+      {
+        id: 'prod-9',
+        name: 'Jeans Baggy "Cicatriz Sashiko"',
+        category: 'Pantalones',
+        condition: 'REDISEÑADA / 2DA MANO',
+        size: '30 / M',
+        intervention: 'Alto (Reconstrucción Total)',
+        price: 145000,
+        minPrice: 115000,
+        sellerId: 'sel-1',
+        artType: 'jeans',
+        description: 'Denim ancho noventero rescatado y teñido en negro carbón, con zurcidos artísticos tipo Sashiko en rodillas y muslos usando retazos de terciopelo.'
+      }
+    ];
+
+    // --- 2. ESTADO GLOBAL PERSISTENTE EN LOCALSTORAGE ---
+    let state = {
+      products: [],
+      sellers: [],
+      currentUser: null,
+      cart: [],
+      negotiatedPrices: {}, // { productId: agreedPrice }
+      haggleHistories: {},  // { productId: [ {sender, text} ] }
+      activeCategory: 'Todo',
+      activeHaggleProductId: null
+    };
+
+    function loadState() {
+      try {
+        const savedProducts = localStorage.getItem('necro_products');
+        const savedSellers = localStorage.getItem('necro_sellers');
+        const savedUser = localStorage.getItem('necro_user');
+        const savedCart = localStorage.getItem('necro_cart');
+        const savedDeals = localStorage.getItem('necro_deals');
+        const savedHistories = localStorage.getItem('necro_haggle_histories');
+
+        state.products = savedProducts ? JSON.parse(savedProducts) : [...DEFAULT_PRODUCTS];
+        state.sellers = savedSellers ? JSON.parse(savedSellers) : [...DEFAULT_SELLERS];
+        state.currentUser = savedUser ? JSON.parse(savedUser) : null;
+        state.cart = savedCart ? JSON.parse(savedCart) : [];
+        state.negotiatedPrices = savedDeals ? JSON.parse(savedDeals) : {};
+        state.haggleHistories = savedHistories ? JSON.parse(savedHistories) : {};
+      } catch (e) {
+        console.error('Error cargando localStorage:', e);
+        state.products = [...DEFAULT_PRODUCTS];
+        state.sellers = [...DEFAULT_SELLERS];
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem('necro_products', JSON.stringify(state.products));
+        localStorage.setItem('necro_sellers', JSON.stringify(state.sellers));
+        localStorage.setItem('necro_user', JSON.stringify(state.currentUser));
+        localStorage.setItem('necro_cart', JSON.stringify(state.cart));
+        localStorage.setItem('necro_deals', JSON.stringify(state.negotiatedPrices));
+        localStorage.setItem('necro_haggle_histories', JSON.stringify(state.haggleHistories));
+      } catch (e) {
+        console.error('Error guardando en localStorage:', e);
+      }
+    }
+
+    function resetDemoData() {
+      localStorage.removeItem('necro_products');
+      localStorage.removeItem('necro_sellers');
+      localStorage.removeItem('necro_cart');
+      localStorage.removeItem('necro_deals');
+      localStorage.removeItem('necro_haggle_histories');
+      loadState();
+      renderAll();
+      showToast('Archivo restaurado a sus valores originales.', 'info');
+    }
+
+    // --- 3. UTILIDADES DE FORMATO Y NOTIFICACIONES ---
+    function formatCOP(amount) {
+      return '$' + Number(amount).toLocaleString('es-CO') + ' COP';
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const borderColor = type === 'error' ? 'border-red-600' : (type === 'info' ? 'border-agedSilver' : 'border-crimson');
+      const icon = type === 'error' ? 'fa-circle-exclamation text-red-500' : (type === 'info' ? 'fa-circle-info text-agedSilver' : 'fa-scissors text-blood');
+
+      toast.className = `pointer-events-auto bg-slateDark border ${borderColor} text-bone px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 font-mono text-xs transition-all duration-300 transform translate-y-2 opacity-0`;
+      toast.innerHTML = `
+        <i class="fa-solid ${icon} text-base shrink-0"></i>
+        <span class="flex-1">${message}</span>
+      `;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3600);
+    }
+
+    // --- 4. GENERADOR DE ARTE SVG GÓTICO POR TIPO DE PRENDA ---
+    function getProductArtworkSVG(artType) {
+      const svgs = {
+        cargo: `
+          <svg viewBox="0 0 240 180" class="w-full h-full">
+            <rect width="240" height="180" fill="#0d0d10"/>
+            <path d="M80 25 L160 25 L172 155 L132 155 L120 82 L108 155 L68 155 Z" fill="#18181f" stroke="#c0c0c0" stroke-width="2"/>
+            <rect x="70" y="75" width="24" height="30" fill="#121216" stroke="#8a0303" stroke-width="1.5"/>
+            <rect x="146" y="75" width="24" height="30" fill="#121216" stroke="#8a0303" stroke-width="1.5"/>
+            <path d="M85 45 Q60 75 76 105" stroke="#c0c0c0" stroke-width="2" stroke-dasharray="3 2" fill="none"/>
+            <path d="M136 115 L162 128 M162 115 L136 128" stroke="#b91c1c" stroke-width="2"/>
+          </svg>`,
+        jacket: `
+          <svg viewBox="0 0 240 180" class="w-full h-full">
+            <rect width="240" height="180" fill="#0d0d10"/>
+            <path d="M75 30 L102 22 L120 38 L138 22 L165 30 L192 95 L168 105 L156 68 L156 152 L84 152 L84 68 L72 105 L48 95 Z" fill="#1a1a22" stroke="#e5e5e5" stroke-width="2"/>
+            <line x1="120" y1="38" x2="120" y2="152" stroke="#8a0303" stroke-width="2" stroke-dasharray="4 3"/>
+            <circle cx="72" cy="42" r="3" fill="#c0c0c0"/><circle cx="168" cy="42" r="3" fill="#c0c0c0"/>
+            <path d="M100 85 L120 65 L140 85 L120 120 Z" fill="none" stroke="#b91c1c" stroke-width="1.8"/>
+          </svg>`,
+        tshirt: `
+          <svg viewBox="0 0 240 180" class="w-full h-full">
+            <rect width="240" height="180" fill="#0d0d10"/>
+            <path d="M78 32 L100 26 Q120 42 140 26 L162 32 L190 65 L168 82 L154 64 L154 150 L86 150 L86 64 L72 82 L50 65 Z" fill="#16161c" stroke="#c0c0c0" stroke-width="2"/>
+            <circle cx="120" cy="88" r="22" fill="none" stroke="#8a0303" stroke-width="2" stroke-dasharray="5 3"/>
+            <path d="M120 62 L120 116 M102 82 L138 82" stroke="#e5e5e5" stroke-width="2.5"/>
+          </svg>`,
+        skirt: `
+          <svg viewBox="0 0 240 180" class="w-full h-full">
+            <rect width="240" height="180" fill="#0d0d10"/>
+            <path d="M88 30 L152 30 L178 145 L62 145 Z" fill="#17171e" stroke="#e5e5e5" stroke-width="2"/>
+            <line x1="104" y1="30" x2="90" y2="145" stroke="#8a0303" stroke-width="1.5"/>
+            <line x1="120" y1="30" x2="120" y2="145" stroke="#8a0303" stroke-width="1.5"/>
+            <line x1="136" y1="30" x2="150" y2="145" stroke="#8a0303" stroke-width="1.5"/>
+            <path d="M62 145 Q90 158 120 145 Q150 158 178 145" stroke="#c0c0c0" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+          </svg>`,
+        choker: `
+          <svg viewBox="0 0 240 180" class="w-full h-full">
+            <rect width="240" height="180" fill="#0d0d10"/>
+            <ellipse cx="120" cy="90" rx="68" ry="34" fill="none" stroke="#1f1f26" stroke-width="16"/>
+            <ellipse cx="120" cy="90" rx="68" ry="34" fill="none" stroke="#c0c0c0" stroke-width="1.5"/>
+            <circle cx="120" cy="124" r="14" fill="#0d0d10" stroke="#e5e5e5" stroke-width="3"/>
+            <circle cx="84" cy="116" r="9" fill="#0d0d10" stroke="#b91c1c" stroke-width="2.5"/>
+            <circle cx="156" cy="116" r="9" fill="#0d0d10" stroke="#b91c1c" stroke-width="2.5"/>
+          </svg>`,
+        earrings: `
+          <svg viewBox="0 0 240 180" class="w-full h-full">
+            <rect width="240" height="180" fill="#0d0d10"/>
+            <!-- Espada 1 -->
+            <circle cx="90" cy="40" r="8" fill="none" stroke="#c0c0c0" stroke-width="2"/>
+            <path d="M90 48 L90 142 M74 74 L106 74" stroke="#e5e5e5" stroke-width="3"/>
+            <circle cx="90" cy="74" r="4" fill="#b91c1c"/>
+            <!-- Espada 2 -->
+            <circle cx="150" cy="40" r="8" fill="none" stroke="#c0c0c0" stroke-width="2"/>
+            <path d="M150 48 L150 142 M134 74 L166 74" stroke="#e5e5e5" stroke-width="3"/>
+            <circle cx="150" cy="74" r="4" fill="#b91c1c"/>
+          </svg>`,
+        belt: `
+          <svg viewBox="0 0 240 180" class="w-full h-full">
+            <rect width="240" height="180" fill="#0d0d10"/>
+            <rect x="25" y="72" width="190" height="36" rx="4" fill="#181820" stroke="#c0c0c0" stroke-width="2"/>
+            <rect x="35" y="68" width="26" height="44" rx="3" fill="none" stroke="#e5e5e5" stroke-width="3"/>
+            <circle cx="80" cy="83" r="3.5" fill="#0d0d10" stroke="#b91c1c" stroke-width="1.5"/>
+            <circle cx="80" cy="97" r="3.5" fill="#0d0d10" stroke="#b91c1c" stroke-width="1.5"/>
+            <circle cx="110" cy="83" r="3.5" fill="#0d0d10" stroke="#b91c1c" stroke-width="1.5"/>
+            <circle cx="110" cy="97" r="3.5" fill="#0d0d10" stroke="#b91c1c" stroke-width="1.5"/>
+            <circle cx="140" cy="83" r="3.5" fill="#0d0d10" stroke="#b91c1c" stroke-width="1.5"/>
+            <circle cx="140" cy="97" r="3.5" fill="#0d0d10" stroke="#b91c1c" stroke-width="1.5"/>
+            <circle cx="170" cy="83" r="3.5" fill="#0d0d10" stroke="#b91c1c" stroke-width="1.5"/>
+            <circle cx="170" cy="97" r="3.5" fill="#0d0d10" stroke="#b91c1c" stroke-width="1.5"/>
+          </svg>`,
+        coat: `
+          <svg viewBox="0 0 240 180" class="w-full h-full">
+            <rect width="240" height="180" fill="#0d0d10"/>
+            <path d="M82 22 L120 35 L158 22 L182 110 L164 115 L152 65 L158 160 L82 160 L88 65 L76 115 L58 110 Z" fill="#141419" stroke="#c0c0c0" stroke-width="2"/>
+            <path d="M102 28 L120 75 L138 28" fill="none" stroke="#8a0303" stroke-width="2"/>
+            <circle cx="112" cy="92" r="2.5" fill="#e5e5e5"/><circle cx="128" cy="92" r="2.5" fill="#e5e5e5"/>
+            <circle cx="112" cy="114" r="2.5" fill="#e5e5e5"/><circle cx="128" cy="114" r="2.5" fill="#e5e5e5"/>
+          </svg>`,
+        jeans: `
+          <svg viewBox="0 0 240 180" class="w-full h-full">
+            <rect width="240" height="180" fill="#0d0d10"/>
+            <path d="M82 24 L158 24 L168 156 L128 156 L120 78 L112 156 L72 156 Z" fill="#15151b" stroke="#e5e5e5" stroke-width="2"/>
+            <rect x="82" y="92" width="22" height="18" fill="#1e1e26" stroke="#b91c1c" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <rect x="134" y="64" width="22" height="18" fill="#1e1e26" stroke="#b91c1c" stroke-width="1.5" stroke-dasharray="3 2"/>
+          </svg>`
+      };
+      return svgs[artType] || svgs.jacket;
+    }
+
+    // --- 5. RENDERIZADO DEL CATÁLOGO ---
+    function setCategory(category) {
+      state.activeCategory = category;
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        if (btn.dataset.cat === category) {
+          btn.className = 'cat-btn active px-4 py-2 rounded-lg font-mono text-xs sm:text-sm bg-crimson text-bone border border-blood transition-all';
+        } else {
+          btn.className = 'cat-btn px-4 py-2 rounded-lg font-mono text-xs sm:text-sm bg-slateDark text-agedSilver hover:text-bone border border-zinc-700 transition-all';
+        }
+      });
+      renderCatalog();
+    }
+
+    function renderCatalog() {
+      const grid = document.getElementById('catalog-grid');
+      const emptyState = document.getElementById('empty-catalog');
+      const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+
+      const filtered = state.products.filter(prod => {
+        const matchesCat = state.activeCategory === 'Todo' || prod.category === state.activeCategory;
+        const seller = state.sellers.find(s => s.id === prod.sellerId);
+        const sellerName = seller ? seller.name.toLowerCase() : '';
+        const matchesSearch = !searchTerm || 
+          prod.name.toLowerCase().includes(searchTerm) || 
+          prod.description.toLowerCase().includes(searchTerm) ||
+          sellerName.includes(searchTerm) ||
+          prod.category.toLowerCase().includes(searchTerm);
+        return matchesCat && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      grid.innerHTML = filtered.map(prod => {
+        const seller = state.sellers.find(s => s.id === prod.sellerId) || state.sellers[0];
+        const agreedPrice = state.negotiatedPrices[prod.id];
+        const effectivePrice = agreedPrice || prod.price;
+        const isNewAccessory = prod.condition === 'ACCESORIO NUEVO';
+
+        return `
+          <article class="stitch-card rounded-2xl overflow-hidden flex flex-col justify-between group">
+            <div>
+              <!-- Cabecera Visual SVG + Etiquetas -->
+              <div class="relative h-48 bg-obsidian border-b border-zinc-800 overflow-hidden cursor-pointer" onclick="openQuickView('${prod.id}')">
+                ${getProductArtworkSVG(prod.artType)}
+                
+                <!-- Badge Condición -->
+                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md font-mono text-[10px] font-bold tracking-wider uppercase ${isNewAccessory ? 'bg-zinc-900/95 text-agedSilver border border-agedSilver/60' : 'bg-crimson/95 text-bone border border-blood'}">
+                  ${prod.condition}
+                </span>
+
+                <!-- Botón Vista Rápida -->
+                <button class="absolute bottom-3 right-3 px-2.5 py-1.5 rounded-lg bg-obsidian/90 hover:bg-crimson text-bone font-mono text-[11px] border border-zinc-700 opacity-90 group-hover:opacity-100 transition-all">
+                  <i class="fa-solid fa-expand mr-1"></i> Detalles
+                </button>
+              </div>
+
+              <!-- Cuerpo de la tarjeta -->
+              <div class="p-5">
+                <div class="flex items-center justify-between text-[11px] font-mono text-agedSilver mb-1.5">
+                  <span>${prod.category}</span>
+                  <span>Talla: <strong class="text-bone">${prod.size}</strong></span>
+                </div>
+
+                <h3 onclick="openQuickView('${prod.id}')" class="font-cinzel font-bold text-lg text-bone hover:text-blood cursor-pointer transition-colors line-clamp-1">
+                  ${prod.name}
+                </h3>
+
+                <p class="text-xs text-agedSilver mt-2 line-clamp-2 leading-relaxed">
+                  ${prod.description}
+                </p>
+
+                <!-- Info Vendedor -->
+                <div class="mt-4 pt-3 border-t border-dashed border-zinc-800 flex items-center justify-between text-xs font-mono">
+                  <span class="text-zinc-400 truncate">
+                    <i class="fa-solid fa-needle-and-thread text-blood mr-1"></i> ${seller.name}
+                  </span>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-obsidian text-agedSilver border border-zinc-800">
+                    ${prod.intervention.split(' ')[0]}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pie de Tarjeta: Precio + Botones Regatear y Carrito -->
+            <div class="px-5 pb-5 pt-2">
+              <div class="mb-3">
+                ${agreedPrice ? `
+                  <div class="flex items-baseline gap-2">
+                    <span class="font-mono text-lg font-bold text-emerald-400">${formatCOP(agreedPrice)}</span>
+                    <span class="font-mono text-xs text-zinc-500 line-through">${formatCOP(prod.price)}</span>
+                    <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-700/50">REGATEADO</span>
+                  </div>
+                ` : `
+                  <span class="font-mono text-lg font-bold text-bone">${formatCOP(prod.price)}</span>
+                `}
+              </div>
+
+              <div class="grid grid-cols-2 gap-2.5">
+                <button onclick="openHaggleModal('${prod.id}')" class="py-2.5 px-3 rounded-lg bg-obsidian hover:bg-zinc-900 border border-crimson text-bone font-mono text-xs font-bold transition-all flex items-center justify-center gap-1.5">
+                  <i class="fa-solid fa-handshake-angle text-blood"></i> Regatear
+                </button>
+                <button onclick="addToCart('${prod.id}')" class="py-2.5 px-3 rounded-lg bg-crimson hover:bg-blood text-bone font-mono text-xs font-bold transition-all flex items-center justify-center gap-1.5">
+                  <i class="fa-solid fa-cart-plus"></i> Añadir
+                </button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // --- 6. VISTA RÁPIDA DE PRENDA ---
+    function openQuickView(productId) {
+      const prod = state.products.find(p => p.id === productId);
+      if (!prod) return;
+      const seller = state.sellers.find(s => s.id === prod.sellerId) || state.sellers[0];
+      const agreedPrice = state.negotiatedPrices[prod.id];
+      const waMsg = encodeURIComponent(`Hola ${seller.name}, vi "${prod.name}" en NECRO-STITCH y me interesa saber más.`);
+
+      document.getElementById('quickview-content').innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div class="rounded-xl overflow-hidden border border-zinc-800 h-60 bg-obsidian">
+            ${getProductArtworkSVG(prod.artType)}
+          </div>
+          <div class="space-y-3">
+            <span class="px-2.5 py-1 rounded font-mono text-[10px] font-bold bg-crimson/20 border border-crimson text-blood">
+              ${prod.condition}
+            </span>
+            <h3 class="font-cinzel text-2xl font-bold text-bone">${prod.name}</h3>
+            <p class="text-xs text-agedSilver leading-relaxed">${prod.description}</p>
+            
+            <div class="p-3 rounded-lg bg-obsidian border border-zinc-800 font-mono text-xs space-y-1">
+              <p><span class="text-zinc-500">Categoría:</span> <span class="text-bone">${prod.category}</span></p>
+              <p><span class="text-zinc-500">Talla:</span> <span class="text-bone">${prod.size}</span></p>
+              <p><span class="text-zinc-500">Intervención:</span> <span class="text-bone">${prod.intervention}</span></p>
+              <p><span class="text-zinc-500">Artesano:</span> <span class="text-bone">${seller.name} (${seller.workshop})</span></p>
+            </div>
+
+            <div class="pt-1">
+              ${agreedPrice 
+                ? `<p class="font-mono text-xl font-bold text-emerald-400">${formatCOP(agreedPrice)} <span class="text-xs text-zinc-500 line-through">${formatCOP(prod.price)}</span></p>`
+                : `<p class="font-mono text-xl font-bold text-bone">${formatCOP(prod.price)}</p>`
+              }
+            </div>
+
+            <div class="flex flex-wrap gap-2 pt-2">
+              <button onclick="closeModal('quickview-modal'); openHaggleModal('${prod.id}');" class="flex-1 py-2.5 px-3 rounded-lg bg-obsidian border border-crimson text-bone font-mono text-xs font-bold hover:bg-zinc-900">
+                <i class="fa-solid fa-handshake-angle text-blood mr-1"></i> Regatear
+              </button>
+              <button onclick="addToCart('${prod.id}'); closeModal('quickview-modal');" class="flex-1 py-2.5 px-3 rounded-lg bg-crimson hover:bg-blood text-bone font-mono text-xs font-bold">
+                <i class="fa-solid fa-cart-plus mr-1"></i> Al Carrito
+              </button>
+              <a href="https://wa.me/${seller.whatsapp}?text=${waMsg}" target="_blank" rel="noopener" class="w-full py-2 px-3 rounded-lg bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-700/60 text-emerald-200 font-mono text-xs text-center">
+                <i class="fa-brands fa-whatsapp mr-1"></i> Consultar directo a ${seller.name}
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('quickview-modal').classList.remove('hidden');
+    }
+
+    // --- 7. SISTEMA INTERACTIVO DE REGATEO INDIVIDUAL ---
+    function openHaggleModal(productId) {
+      const prod = state.products.find(p => p.id === productId);
+      if (!prod) return;
+      const seller = state.sellers.find(s => s.id === prod.sellerId) || state.sellers[0];
+
+      state.activeHaggleProductId = productId;
+      document.getElementById('haggle-title').textContent = prod.name;
+      document.getElementById('haggle-seller-info').textContent = `Negociando con ${seller.name} • Taller: ${seller.workshop}`;
+      document.getElementById('haggle-original-price').textContent = formatCOP(prod.price);
+
+      const currentDeal = state.negotiatedPrices[productId];
+      const dealEl = document.getElementById('haggle-current-deal');
+      const successBox = document.getElementById('haggle-success-action');
+
+      if (currentDeal) {
+        dealEl.textContent = formatCOP(currentDeal);
+        dealEl.className = 'text-base font-bold text-emerald-400';
+        successBox.classList.remove('hidden');
+        document.getElementById('haggle-add-cart-btn').onclick = () => {
+          addToCart(productId);
+          closeModal('haggle-modal');
+        };
+      } else {
+        dealEl.textContent = 'Sin oferta aún';
+        dealEl.className = 'text-base font-bold text-blood';
+        successBox.classList.add('hidden');
+      }
+
+      // Inicializar historial si no existe
+      if (!state.haggleHistories[productId]) {
+        state.haggleHistories[productId] = [
+          {
+            sender: 'seller',
+            text: `Saludos. Soy ${seller.name}. Esta pieza tomó horas de costura y curaduría, pero estoy abierto a escuchar una oferta justa. ¿Cuánto propones?`
+          }
+        ];
+        saveState();
+      }
+
+      // Generar chips rápidos de oferta (-10%, -15%, -20%)
+      const chipsContainer = document.getElementById('haggle-quick-chips');
+      const p10 = Math.round((prod.price * 0.90) / 1000) * 1000;
+      const p15 = Math.round((prod.price * 0.85) / 1000) * 1000;
+      const p22 = Math.round((prod.price * 0.78) / 1000) * 1000;
+      chipsContainer.innerHTML = `
+        <button type="button" onclick="fillHaggleInput(${p10})" class="px-2.5 py-1 rounded bg-slateDark hover:bg-zinc-800 border border-zinc-700 text-[11px] font-mono text-agedSilver">Ofertar ${formatCOP(p10)} (-10%)</button>
+        <button type="button" onclick="fillHaggleInput(${p15})" class="px-2.5 py-1 rounded bg-slateDark hover:bg-zinc-800 border border-zinc-700 text-[11px] font-mono text-agedSilver">Ofertar ${formatCOP(p15)} (-15%)</button>
+        <button type="button" onclick="fillHaggleInput(${p22})" class="px-2.5 py-1 rounded bg-slateDark hover:bg-zinc-800 border border-zinc-700 text-[11px] font-mono text-agedSilver">Probar ${formatCOP(p22)}</button>
+      `;
+
+      document.getElementById('haggle-offer-input').value = '';
+      renderHaggleChat();
+      document.getElementById('haggle-modal').classList.remove('hidden');
+    }
+
+    function fillHaggleInput(amount) {
+      document.getElementById('haggle-offer-input').value = amount;
+    }
+
+    function renderHaggleChat() {
+      const box = document.getElementById('haggle-chat-box');
+      const history = state.haggleHistories[state.activeHaggleProductId] || [];
+      box.innerHTML = history.map(msg => {
+        if (msg.sender === 'user') {
+          return `
+            <div class="flex justify-end">
+              <div class="bg-crimson/30 border border-crimson text-bone px-3 py-2 rounded-xl max-w-[82%]">
+                <span class="text-[10px] text-blood block font-bold mb-0.5">TÚ</span>
+                ${msg.text}
+              </div>
+            </div>
+          `;
+        } else {
+          return `
+            <div class="flex justify-start">
+              <div class="bg-slateDark border border-zinc-700 text-agedSilver px-3 py-2 rounded-xl max-w-[85%]">
+                <span class="text-[10px] text-bone block font-bold mb-0.5">ARTESANO</span>
+                ${msg.text}
+              </div>
+            </div>
+          `;
+        }
+      }).join('');
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function submitHaggleOffer(e) {
+      e.preventDefault();
+      const productId = state.activeHaggleProductId;
+      const prod = state.products.find(p => p.id === productId);
+      const seller = state.sellers.find(s => s.id === prod.sellerId) || state.sellers[0];
+      const offer = Number(document.getElementById('haggle-offer-input').value);
+
+      if (!offer || offer <= 0) return;
+
+      const history = state.haggleHistories[productId];
+      history.push({ sender: 'user', text: `Te ofrezco ${formatCOP(offer)} por esta pieza.` });
+
+      let reply = '';
+      const minAcceptable = prod.minPrice;
+
+      if (offer >= prod.price) {
+        state.negotiatedPrices[productId] = prod.price;
+        reply = `¡Trato hecho sin dudarlo! Respetas el precio completo de ${formatCOP(prod.price)}. Ya puedes añadirla al carrito.`;
+        activateHaggleSuccess(productId, prod.price);
+      } else if (offer >= minAcceptable) {
+        state.negotiatedPrices[productId] = offer;
+        reply = `Mmm... me parece un intercambio justo por el trabajo artesanal que lleva. ¡Acepto tus ${formatCOP(offer)}! El precio quedó actualizado para ti.`;
+        activateHaggleSuccess(productId, offer);
+      } else if (offer >= minAcceptable * 0.86) {
+        const counterOffer = Math.round(((offer + minAcceptable) / 2) / 1000) * 1000;
+        reply = `Uf, ${formatCOP(offer)} apenas cubre los materiales e hilos. Pero como veo verdadero interés en la pieza, te la dejo en ${formatCOP(counterOffer)}. ¿Cerramos ahí?`;
+      } else {
+        reply = `Imposible bajar tanto a ${formatCOP(offer)}; cada costura y herraje se hizo a mano. Lo mínimo que puedo considerar ronda los ${formatCOP(minAcceptable)}.`;
+      }
+
+      history.push({ sender: 'seller', text: reply });
+      saveState();
+      renderHaggleChat();
+      renderCatalog();
+      renderContactDirectory();
+      document.getElementById('haggle-offer-input').value = '';
+    }
+
+    function activateHaggleSuccess(productId, agreedPrice) {
+      const dealEl = document.getElementById('haggle-current-deal');
+      dealEl.textContent = formatCOP(agreedPrice);
+      dealEl.className = 'text-base font-bold text-emerald-400';
+
+      const successBox = document.getElementById('haggle-success-action');
+      successBox.classList.remove('hidden');
+      document.getElementById('haggle-add-cart-btn').onclick = () => {
+        addToCart(productId);
+        closeModal('haggle-modal');
+      };
+
+      // Si el producto ya estaba en el carrito, actualizar su precio allí también
+      const cartItem = state.cart.find(item => item.productId === productId);
+      if (cartItem) {
+        cartItem.finalPrice = agreedPrice;
+        saveState();
+        renderCart();
+      }
+      showToast(`¡Regateo aceptado! Nuevo precio: ${formatCOP(agreedPrice)}`);
+    }
+
+    // --- 8. CARRITO DE COMPRAS ---
+    function addToCart(productId) {
+      const prod = state.products.find(p => p.id === productId);
+      if (!prod) return;
+
+      const finalPrice = state.negotiatedPrices[productId] || prod.price;
+      const existing = state.cart.find(item => item.productId === productId);
+
+      if (existing) {
+        existing.finalPrice = finalPrice;
+        showToast(`"${prod.name}" ya está en tu bolsa (Pieza única).`, 'info');
+      } else {
+        state.cart.push({
+          productId: prod.id,
+          name: prod.name,
+          finalPrice: finalPrice,
+          originalPrice: prod.price,
+          artType: prod.artType
+        });
+        showToast(`Añadido a tu bolsa: ${prod.name}`);
+      }
+
+      saveState();
+      renderCart();
+    }
+
+    function removeFromCart(productId) {
+      state.cart = state.cart.filter(item => item.productId !== productId);
+      saveState();
+      renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cart-items-container');
+      const badge = document.getElementById('cart-badge');
+      const subtotalEl = document.getElementById('cart-subtotal');
+
+      badge.textContent = state.cart.length;
+
+      if (state.cart.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 font-mono text-xs text-agedSilver">
+            <i class="fa-solid fa-spider text-3xl text-zinc-700 mb-3 block"></i>
+            Tu bolsa está vacía. Explora el catálogo y negocia tus reliquias.
+          </div>
+        `;
+        subtotalEl.textContent = '$0 COP';
+        return;
+      }
+
+      let subtotal = 0;
+      container.innerHTML = state.cart.map(item => {
+        subtotal += item.finalPrice;
+        const wasHaggled = item.finalPrice < item.originalPrice;
+        return `
+          <div class="flex items-center gap-3 p-3 rounded-xl bg-obsidian border border-zinc-800">
+            <div class="w-16 h-16 rounded-lg overflow-hidden shrink-0 border border-zinc-800">
+              ${getProductArtworkSVG(item.artType)}
+            </div>
+            <div class="flex-1 min-w-0">
+              <h4 class="font-cinzel font-bold text-xs text-bone truncate">${item.name}</h4>
+              <p class="font-mono text-xs font-bold ${wasHaggled ? 'text-emerald-400' : 'text-agedSilver'} mt-1">
+                ${formatCOP(item.finalPrice)}
+              </p>
+              ${wasHaggled ? `<span class="text-[10px] font-mono text-emerald-500">Precio regateado acordado</span>` : ''}
+            </div>
+            <button onclick="removeFromCart('${item.productId}')" class="p-2 text-zinc-500 hover:text-blood transition-colors" title="Eliminar">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      subtotalEl.textContent = formatCOP(subtotal);
+    }
+
+    function toggleCart() {
+      const drawer = document.getElementById('cart-drawer');
+      drawer.classList.toggle('hidden');
+      renderCart();
+    }
+
+    function processCheckout() {
+      if (state.cart.length === 0) {
+        showToast('Añade al menos una prenda antes de confirmar el pedido.', 'error');
+        return;
+      }
+
+      const method = document.getElementById('checkout-payment-method').value;
+      const total = state.cart.reduce((acc, item) => acc + item.finalPrice, 0);
+      const orderCode = 'NS-' + Math.floor(100000 + Math.random() * 900000);
+      const buyerName = state.currentUser ? state.currentUser.name : 'Visitante Anónimo';
+
+      document.getElementById('receipt-details').innerHTML = `
+        <p><span class="text-zinc-500">Orden:</span> <strong class="text-bone">${orderCode}</strong></p>
+        <p><span class="text-zinc-500">Comprador:</span> <span class="text-bone">${buyerName}</span></p>
+        <p><span class="text-zinc-500">Piezas:</span> <span class="text-bone">${state.cart.length} reliquia(s)</span></p>
+        <p><span class="text-zinc-500">Método de Pago:</span> <span class="text-blood font-bold">${method}</span></p>
+        <p class="pt-2 border-t border-zinc-800 text-sm"><span class="text-zinc-500">Total Pagado:</span> <strong class="text-emerald-400">${formatCOP(total)}</strong></p>
+      `;
+
+      state.cart = [];
+      saveState();
+      renderCart();
+      toggleCart();
+      document.getElementById('receipt-modal').classList.remove('hidden');
+    }
+
+    // --- 9. REGISTRO / LOGIN DE USUARIOS Y VENDEDORES ---
+    function openAuthModal() {
+      updateAuthUI();
+      document.getElementById('auth-modal').classList.remove('hidden');
+    }
+
+    function toggleSellerFields() {
+      const role = document.getElementById('auth-role').value;
+      const extra = document.getElementById('seller-extra-fields');
+      if (role === 'Vendedor/Artesano') {
+        extra.classList.remove('hidden');
+      } else {
+        extra.classList.add('hidden');
+      }
+    }
+
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('auth-name').value.trim();
+      const email = document.getElementById('auth-email').value.trim();
+      const role = document.getElementById('auth-role').value;
+      const whatsapp = document.getElementById('auth-whatsapp').value.trim() || '573001112233';
+      const instagram = document.getElementById('auth-instagram').value.trim() || '@necrostitch.co';
+
+      const sellerId = 'sel-user-' + Date.now();
+      state.currentUser = {
+        name,
+        email,
+        role,
+        whatsapp,
+        instagram,
+        sellerId
+      };
+
+      // Si se registra como Vendedor/Artesano, añadirlo al directorio de vendedores
+      if (role === 'Vendedor/Artesano') {
+        state.sellers.push({
+          id: sellerId,
+          name: name,
+          workshop: `Taller ${name}`,
+          specialty: 'Upcycling gótico y costura alternativa',
+          rating: 'Nuevo Artesano ★',
+          location: 'Colombia',
+          whatsapp: whatsapp.replace(/\D/g, ''),
+          instagram: instagram.startsWith('@') ? instagram : '@' + instagram,
+          email: email,
+          personality: 'directa'
+        });
+      }
+
+      saveState();
+      updateAuthUI();
+      renderSellers();
+      closeModal('auth-modal');
+      showToast(`Bienvenido al colectivo, ${name} (${role}).`);
+    }
+
+    function logoutUser() {
+      state.currentUser = null;
+      saveState();
+      updateAuthUI();
+      closeModal('auth-modal');
+      showToast('Has cerrado tu sesión.', 'info');
+    }
+
+    function updateAuthUI() {
+      const btnText = document.getElementById('auth-btn-text');
+      const loggedOutView = document.getElementById('auth-logged-out-view');
+      const loggedInView = document.getElementById('auth-logged-in-view');
+
+      if (state.currentUser) {
+        btnText.textContent = state.currentUser.name;
+        loggedOutView.classList.add('hidden');
+        loggedInView.classList.remove('hidden');
+        document.getElementById('profile-role-badge').textContent = state.currentUser.role;
+        document.getElementById('profile-name').textContent = state.currentUser.name;
+        document.getElementById('profile-email').textContent = state.currentUser.email;
+        document.getElementById('profile-wa').textContent = state.currentUser.whatsapp;
+        document.getElementById('profile-ig').textContent = state.currentUser.instagram;
+      } else {
+        btnText.textContent = 'Acceder / Registro';
+        loggedOutView.classList.remove('hidden');
+        loggedInView.classList.add('hidden');
+      }
+    }
+
+    // --- 10. PUBLICAR NUEVA PRENDA / ACCESORIO ---
+    function openSellModal() {
+      const notice = document.getElementById('sell-user-notice');
+      if (!state.currentUser) {
+        showToast('Debes registrarte o iniciar sesión para publicar una prenda.', 'info');
+        openAuthModal();
+        return;
+      }
+      notice.textContent = `Publicando como: ${state.currentUser.name} (${state.currentUser.role})`;
+      document.getElementById('sell-modal').classList.remove('hidden');
+    }
+
+    function autoToggleCondition() {
+      const cat = document.getElementById('prod-category').value;
+      const cond = document.getElementById('prod-condition');
+      if (cat === 'Accesorios') {
+        cond.value = 'ACCESORIO NUEVO';
+      } else {
+        cond.value = 'REDISEÑADA / 2DA MANO';
+      }
+    }
+
+    function handlePublishProduct(e) {
+      e.preventDefault();
+      if (!state.currentUser) return;
+
+      // Asegurar que el usuario tenga perfil en state.sellers
+      let sellerObj = state.sellers.find(s => s.id === state.currentUser.sellerId);
+      if (!sellerObj) {
+        sellerObj = {
+          id: state.currentUser.sellerId,
+          name: state.currentUser.name,
+          workshop: `Taller ${state.currentUser.name}`,
+          specialty: 'Moda alternativa independiente',
+          rating: 'Artesano Verificado ★',
+          location: 'Bogotá, Colombia',
+          whatsapp: (state.currentUser.whatsapp || '573001112233').replace(/\D/g, ''),
+          instagram: state.currentUser.instagram || '@necrostitch.co',
+          email: state.currentUser.email,
+          personality: 'directa'
+        };
+        state.sellers.push(sellerObj);
+      }
+
+      const category = document.getElementById('prod-category').value;
+      const artMap = {
+        'Pantalones': 'cargo',
+        'Camisetas': 'tshirt',
+        'Chaquetas/Abrigos': 'jacket',
+        'Faldas/Vestidos': 'skirt',
+        'Accesorios': 'choker'
+      };
+
+      const price = Number(document.getElementById('prod-price').value);
+      let minPrice = Number(document.getElementById('prod-min-price').value);
+      if (minPrice > price) minPrice = Math.round(price * 0.85);
+
+      const newProduct = {
+        id: 'prod-' + Date.now(),
+        name: document.getElementById('prod-name').value.trim(),
+        category: category,
+        condition: document.getElementById('prod-condition').value,
+        size: document.getElementById('prod-size').value.trim(),
+        intervention: document.getElementById('prod-level').value,
+        price: price,
+        minPrice: minPrice,
+        sellerId: sellerObj.id,
+        artType: artMap[category] || 'jacket',
+        description: document.getElementById('prod-desc').value.trim()
+      };
+
+      state.products.unshift(newProduct);
+      saveState();
+      renderAll();
+      e.target.reset();
+      closeModal('sell-modal');
+      showToast(`¡Reliquia "${newProduct.name}" publicada en el catálogo!`);
+    }
+
+    // --- 11. RENDERIZADO DE VENDEDORES Y DIRECTORIO DE CONTACTO INFERIOR ---
+    function renderSellers() {
+      const grid = document.getElementById('sellers-grid');
+      grid.innerHTML = state.sellers.map(seller => {
+        const count = state.products.filter(p => p.sellerId === seller.id).length;
+        return `
+          <div class="stitch-card rounded-xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-10 h-10 rounded-lg bg-crimson/20 border border-crimson flex items-center justify-center text-blood">
+                  <i class="fa-solid fa-scissors"></i>
+                </div>
+                <span class="font-mono text-[11px] text-amber-400">${seller.rating}</span>
+              </div>
+              <h3 class="font-cinzel font-bold text-base text-bone">${seller.name}</h3>
+              <p class="font-mono text-xs text-blood mt-0.5">${seller.workshop}</p>
+              <p class="text-xs text-agedSilver mt-2">${seller.specialty}</p>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-zinc-800 font-mono text-[11px] space-y-2">
+              <div class="flex justify-between text-zinc-400">
+                <span><i class="fa-solid fa-location-dot mr-1"></i>${seller.location}</span>
+                <span class="text-bone font-bold">${count} pieza(s)</span>
+              </div>
+              <div class="flex gap-2 pt-1">
+                <a href="https://wa.me/${seller.whatsapp}" target="_blank" rel="noopener" class="flex-1 py-1.5 rounded bg-emerald-950/70 hover:bg-emerald-900 border border-emerald-700/50 text-emerald-300 text-center">
+                  <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                </a>
+                <a href="https://instagram.com/${seller.instagram.replace('@','')}" target="_blank" rel="noopener" class="flex-1 py-1.5 rounded bg-obsidian hover:bg-zinc-900 border border-zinc-700 text-agedSilver text-center">
+                  <i class="fa-brands fa-instagram"></i> IG
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderContactDirectory() {
+      const tbody = document.getElementById('contact-directory-body');
+      tbody.innerHTML = state.products.map(prod => {
+        const seller = state.sellers.find(s => s.id === prod.sellerId) || state.sellers[0];
+        const agreedPrice = state.negotiatedPrices[prod.id];
+        const currentPrice = agreedPrice || prod.price;
+        const waText = encodeURIComponent(
+          `Hola ${seller.name}, te escribo desde NECRO-STITCH por la pieza "${prod.name}" (Precio: ${formatCOP(currentPrice)}). ¿Sigue disponible?`
+        );
+
+        return `
+          <tr class="hover:bg-slateDark/60 transition-colors">
+            <td class="py-4 px-4">
+              <div class="font-cinzel font-bold text-bone text-sm">${prod.name}</div>
+              <div class="font-mono text-[11px] text-zinc-500">${prod.category} • Talla ${prod.size}</div>
+            </td>
+            <td class="py-4 px-4">
+              <span class="px-2 py-0.5 rounded font-mono text-[10px] ${prod.condition === 'ACCESORIO NUEVO' ? 'bg-zinc-800 text-agedSilver' : 'bg-crimson/20 text-blood border border-crimson/40'}">
+                ${prod.condition}
+              </span>
+            </td>
+            <td class="py-4 px-4 font-mono">
+              <div class="font-bold ${agreedPrice ? 'text-emerald-400' : 'text-bone'}">${formatCOP(currentPrice)}</div>
+              <button onclick="openHaggleModal('${prod.id}')" class="text-[11px] text-blood hover:underline mt-0.5 flex items-center gap-1">
+                <i class="fa-solid fa-handshake-angle"></i> ${agreedPrice ? 'Re-negociar oferta' : 'Regatear este precio'}
+              </button>
+            </td>
+            <td class="py-4 px-4 font-mono text-xs">
+              <div class="text-bone font-bold">${seller.name}</div>
+              <div class="text-zinc-500 text-[11px]">${seller.workshop}</div>
+            </td>
+            <td class="py-4 px-4 text-right font-mono text-xs">
+              <div class="inline-flex flex-wrap justify-end gap-2">
+                <a href="https://wa.me/${seller.whatsapp}?text=${waText}" target="_blank" rel="noopener" class="px-2.5 py-1.5 rounded-lg bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-600/50 text-emerald-300 transition-colors" title="Contactar por WhatsApp con mensaje de prenda">
+                  <i class="fa-brands fa-whatsapp mr-1"></i> WhatsApp
+                </a>
+                <a href="https://instagram.com/${seller.instagram.replace('@','')}" target="_blank" rel="noopener" class="px-2.5 py-1.5 rounded-lg bg-slateDark hover:bg-zinc-800 border border-zinc-700 text-agedSilver transition-colors" title="Perfil Instagram del Taller">
+                  <i class="fa-brands fa-instagram mr-1"></i> ${seller.instagram}
+                </a>
+                <a href="mailto:${seller.email}?subject=Consulta%20NECRO-STITCH:%20${encodeURIComponent(prod.name)}" class="px-2.5 py-1.5 rounded-lg bg-slateDark hover:bg-zinc-800 border border-zinc-700 text-agedSilver transition-colors" title="Enviar correo al artesano">
+                  <i class="fa-solid fa-envelope"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // --- 12. CONTROL DE MODALES Y MENÚ MÓVIL ---
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+    }
+
+    function toggleMobileMenu() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    }
+
+    function renderAll() {
+      updateAuthUI();
+      renderCatalog();
+      renderSellers();
+      renderContactDirectory();
+      renderCart();
+    }
+
+    // Inicialización al cargar la página
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      renderAll();
+    });
+  </script>
+</body>
+</html>
